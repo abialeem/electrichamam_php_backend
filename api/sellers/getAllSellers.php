@@ -7,38 +7,36 @@ header('Content-Type: application/json');
 
 
 include_once('../../core/initialize.php');
-include_once '../../models/product.php';
+include_once '../../models/seller.php';
 
-$product = new Product($db);
+$seller = new Seller($db);
 
-$result = $product->getAllProducts();
+$result = $seller->getAllSellers();
 $row_count = $result->rowCount();
 
+
+
 if ($row_count > 0) {
-    $product_arr = array();
-    $product_arr['data'] = array();
+    $seller_arr = array();
+    $seller_arr['data'] = array();
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         extract($row);
-        $product = array(
+        $seller = array(
             'id' => $id,
-            'title' => $title,
+            'name' => $name,
             'image' => $image,
-            'images' => $images,
             'description' => $description,
-            'price' => $price,
-            'quantity' => $quantity,
-            'short_desc' => $short_desc,
-            'cat_id' => $cat_id,
-            'seller_id' => $seller_id
+            'products_count' => $products_count
+            
         );
-        array_push($product_arr['data'], $product);
+        array_push($seller_arr['data'], $seller);
     }
-    echo json_encode($product_arr);
+    echo json_encode($seller_arr);
 } else {
     http_response_code(404);
     echo json_encode(
-        array('message' => 'No products to display')
+        array('message' => 'No sellers to display')
     );
 }
-?>
 
+?>

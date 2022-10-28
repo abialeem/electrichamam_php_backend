@@ -99,13 +99,13 @@ class Address
         return 0;
     }
 
-    public function checkAddressById()
+    public function checkAddressByUserId()
     {
         $query = "SELECT * FROM " . $this->table . " 
                     WHERE 
-                        id = :id";
+                        user_id = :user_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $this->id);
+        $stmt->bindParam(":user_id", $this->user_id);
         $stmt->execute();
         return $stmt;
     }

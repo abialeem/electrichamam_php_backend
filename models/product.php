@@ -33,12 +33,23 @@ class Product
 
     public function getSingleProduct()
     {
-        $query = 'SELECT 
+
+
+        $queryProductOnly = 'SELECT 
                     *
                     FROM ' . $this->table . ' 
                         WHERE 
                             id = :id';
-        $stmt = $this->conn->prepare($query);
+
+        $queryWithSellerName = 'SELECT
+         products.*,sellers.name 
+         FROM
+          products
+           INNER JOIN
+            sellers ON ( products.seller_id = sellers.id ) 
+            WHERE products.id = :id';
+        
+        $stmt = $this->conn->prepare($queryProductOnly);
         $stmt->bindParam(':id', $this->id);
         $stmt->execute();
         return $stmt;

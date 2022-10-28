@@ -1,5 +1,4 @@
 <?php
-include_once '../core/initialize.php';
 class User
 {
     private $conn;
@@ -100,7 +99,8 @@ class User
 
     public function isLoggedIn()
     {
-        return (isset($_SESSION['id'])) ? true : false;
+        // return (isset($_SESSION['id'])) ? true : false;
+        return false;
     }
 
     public function loginUser()

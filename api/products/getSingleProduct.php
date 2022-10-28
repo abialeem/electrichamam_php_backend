@@ -1,30 +1,35 @@
 <?php
-header('Access-Control-Allow-Origin');
+
+// required headers
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: access");
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
-header('Access-Control-Allow-Methods: POST');
-header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
 include_once '../../core/initialize.php';
 include_once '../../models/product.php';
 
 $product = new Product($db);
 
-$data = json_decode(file_get_contents("php://input"));
+$product_id = isset($_GET['id']) ?  intval($_GET['id']) : die();
 
-if (isset($data->id)) {
-    if(empty($data->id)) {
+// $data = json_decode(file_get_contents("php://input"));
+
+if (isset($product_id)) {
+    if(empty($product_id)) {
         http_response_code(422);
         echo json_encode(
             array('message' => 'Please select a product')
         );
     } else {
-        if(is_int($data->id) != 1) {
+        if(is_int($product_id) != 1) {
             http_response_code(422);
             echo json_encode(
                 array('message' => 'Please provide an integer value for product id')
             );
         } else {
-            $product->id = $data->id;
+            $product->id = $product_id;
             $result = $product->getSingleProduct();
             $row_count = $result->rowCount();
             if ($row_count > 0) {
