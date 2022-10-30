@@ -1,18 +1,30 @@
 <?php
+
+// required headers
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Access-Control-Allow-Credentials: true");
-header('Content-Type: application/json;charset=UTF-8');
+header('Content-Type: application/json');
+
+
 
 include_once('../../core/initialize.php');
 include_once '../../models/user.php';
 
 $user = new User($db);
 
-$data = json_decode(file_get_contents("php://input"));
+$data =  new stdClass();
 
-if (isset($data->email) && isset($data->password)) {
+
+if (isset($_POST['email']) && isset($_POST['password'])) {
+    $data->email = $_POST['email'];
+
+    $data->password = $_POST['password'];
+
+
     if (empty($data->email) || empty($data->password)) {
         http_response_code(422);
         echo json_encode(
@@ -75,7 +87,9 @@ if (isset($data->email) && isset($data->password)) {
 } else {
     http_response_code(422);
     echo json_encode(
-        array('message' => 'Please enter all the required fields')
+        array('message' => 'Please enter all the required fields ')
     );
 }
+
+
 ?>

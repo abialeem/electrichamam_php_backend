@@ -105,10 +105,14 @@ class User
 
     public function loginUser()
     {
+        // $query = "SELECT * FROM " . $this->table . " 
+        //             WHERE email = :email 
+        //             AND password = :password 
+        //             AND deleted_at IS NULL";
         $query = "SELECT * FROM " . $this->table . " 
                     WHERE email = :email 
                     AND password = :password 
-                    AND deleted_at IS NULL";
+                    ";
         $stmt = $this->conn->prepare($query);
         $this->email = htmlspecialchars(strip_tags($this->email));
         $this->password = md5(htmlspecialchars(strip_tags($this->password)));
